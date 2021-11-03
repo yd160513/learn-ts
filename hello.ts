@@ -6,9 +6,9 @@ function greet(paraon: string, date: Date): number {
 }
 // greet('123', new Date())
 
-function fn(s: string) {
-  console.log(s.substr)
-}
+// function fn(s: string) {
+//   console.log(s.substr)
+// }
 
 // // let msg = 'message'
 
@@ -97,14 +97,14 @@ function handleRequest(url: string, methos: 'GET' | 'POST') {
 // 3. Equality narrowing
 // 4. in
 // 5. instanceof
-function doSomething(x: string | null) {
-  if (x === null) {
-    // do nothing
-  } else {
-    console.log("Hello, " + x.toUpperCase());
-  }
-  // console.log("Hello, " + x.toUpperCase());
-}
+// function doSomething(x: string | null) {
+//   if (x === null) {
+//     // do nothing
+//   } else {
+//     console.log("Hello, " + x.toUpperCase());
+//   }
+//   // console.log("Hello, " + x.toUpperCase());
+// }
 
 
 function liveDangerously(x?: number | null) {
@@ -257,3 +257,156 @@ function getArea(shape: Shape) {
       return _exhaustiveCheck;
   }
 }
+
+
+// type DescribableFunction = {
+//   description: string;
+//   (someArg: number): boolean;
+// };
+// function doSomething(fn: DescribableFunction) {
+//   console.log(fn.description + " returned " + fn(6));
+// }
+// function setName(name:number) {
+//   return true
+// }
+// setName.description = '1'
+// doSomething(setName)
+
+
+// type SomeConstructor = {
+//   new(s: string): SomeObject;
+// };
+// function fn(ctor: SomeConstructor) {
+//   return new ctor("hello");
+// }
+// class SomeObject {
+//   constructor(s: string) { }
+// }
+// fn(SomeObject)
+
+function firstElement<Type>(arr: Type[]): Type | undefined {
+  return arr[0]
+}
+const s = firstElement(["a", "b", "c"]);
+const n = firstElement([1, 2, 3]);
+const u = firstElement([]);
+
+function map<Input, Output>(arr: Input[], func: (arg: Input) => Output): Output[] {
+  return arr.map(func);
+}
+
+// Parameter 'n' is of type 'string'
+// 'parsed' is of type 'number[]'
+// const parsed = map(["1", "2", "3"], (n) => parseInt(n));
+
+// 可以处理任何类型
+// 但是现在指向处理 number 或者 string 类型
+const parsed = map(["1", "2", "3"], (n) => parseInt(n));
+
+
+function minimumLength<Type extends { length: number }>(
+  obj: Type,
+  minimum: number
+): Type {
+  if (obj.length >= minimum) {
+    return obj;
+  } else {
+    return { length: minimum };
+  }
+}
+// const user = {
+//   length: 10,
+//   name: 'zhangsan'
+// }
+// const res = minimumLength(user, 5)
+// const res1 = minimumLength(user, 100)
+
+
+function firstElement1<Type>(arr: Type[]) {
+  return arr[0];
+}
+
+function firstElement2<Type extends any[]>(arr: Type) {
+  return arr[0];
+}
+
+// a: number (good)
+const a = firstElement1([1, 2, 3]);
+// b: any (bad)
+const b = firstElement2([1, 2, 3]);
+
+
+function filter1<Type>(arr: Type[], func: (arg: Type) => boolean): Type[] {
+  return arr.filter(func);
+}
+filter1([12,2, 3], (s) => false)
+
+// 这里的 Func 作为泛型传入了，但是在函数内部却没有用到
+function filter2<Type, Func extends (arg: Type) => boolean>(
+  arr: Type[],
+  func: Func
+): Type[] {
+  return arr.filter(func);
+}
+filter2([1, 2, 3], (s) => true)
+
+function f(x: number | undefined) {
+  // ...
+}
+
+// 在定义回调函数的时候，建议将回调函数中的参数都是必传参数，不建议用可选参数
+function myForEach(arr: any[], callback: (arg: any, index: number) => void) {
+  // function myForEach(arr: any[], callback: (arg: any, index?: number) => void) {
+  for (let i = 0; i < arr.length; i++) {
+    callback(arr[i], i);
+    // callback(arr[i]);
+  }
+}
+myForEach([1, 2, 3], (a) => console.log(a));
+myForEach([1, 2, 3], (a, i) => console.log(a, i));
+myForEach([1, 2, 3], (a, i) => {
+  console.log(i.toFixed());
+});
+
+// 函数实现要兼容函数重载
+// function fn(x: string): void;
+// function fn() {
+//   // ...
+// }
+// // Expected to be able to call with zero arguments
+// fn();
+
+function fn(x: string): string;
+// Return type isn't right
+function fn(x: number): boolean | string;
+function fn(x: string | number) {
+  return "oops";
+}
+
+
+
+const user = {
+  id: 123,
+ 
+  admin: false,
+  becomeAdmin: function () {
+    this.admin = true;
+  },
+};
+
+type User = typeof user
+interface DB {
+  filterUsers(filter: (this: User) => boolean): User[];
+}
+const db = getDB();
+const admins = db.filterUsers(function (this: User) {
+  return this.admin;
+});
+
+
+function safeParse(s: string): unknown {
+  return JSON.parse(s);
+}
+ 
+// Need to be careful with 'obj'!
+const obj12 = safeParse('someRandomString');
