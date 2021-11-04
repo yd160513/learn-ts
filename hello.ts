@@ -246,17 +246,17 @@ type Shape = Circle | Square | Triangle;
 //   }
 // }
 
-function getArea(shape: Shape) {
-  switch (shape.kind) {
-    case "circle":
-      return Math.PI * shape.radius ** 2;
-    case "square":
-      return shape.sideLength ** 2;
-    default:
-      const _exhaustiveCheck: never = shape;
-      return _exhaustiveCheck;
-  }
-}
+// function getArea(shape: Shape) {
+//   switch (shape.kind) {
+//     case "circle":
+//       return Math.PI * shape.radius ** 2;
+//     case "square":
+//       return shape.sideLength ** 2;
+//     default:
+//       const _exhaustiveCheck: never = shape;
+//       return _exhaustiveCheck;
+//   }
+// }
 
 
 // type DescribableFunction = {
@@ -304,16 +304,16 @@ function map<Input, Output>(arr: Input[], func: (arg: Input) => Output): Output[
 const parsed = map(["1", "2", "3"], (n) => parseInt(n));
 
 
-function minimumLength<Type extends { length: number }>(
-  obj: Type,
-  minimum: number
-): Type {
-  if (obj.length >= minimum) {
-    return obj;
-  } else {
-    return { length: minimum };
-  }
-}
+// function minimumLength<Type extends { length: number }>(
+//   obj: Type,
+//   minimum: number
+// ): Type {
+//   if (obj.length >= minimum) {
+//     return obj;
+//   } else {
+//     return { length: minimum };
+//   }
+// }
 // const user = {
 //   length: 10,
 //   name: 'zhangsan'
@@ -339,7 +339,7 @@ const b = firstElement2([1, 2, 3]);
 function filter1<Type>(arr: Type[], func: (arg: Type) => boolean): Type[] {
   return arr.filter(func);
 }
-filter1([12,2, 3], (s) => false)
+filter1([12, 2, 3], (s) => false)
 
 // 这里的 Func 作为泛型传入了，但是在函数内部却没有用到
 function filter2<Type, Func extends (arg: Type) => boolean>(
@@ -385,28 +385,168 @@ function fn(x: string | number) {
 
 
 
-const user = {
-  id: 123,
- 
-  admin: false,
-  becomeAdmin: function () {
-    this.admin = true;
-  },
-};
+// const user = {
+//   id: 123,
 
-type User = typeof user
-interface DB {
-  filterUsers(filter: (this: User) => boolean): User[];
-}
-const db = getDB();
-const admins = db.filterUsers(function (this: User) {
-  return this.admin;
-});
+//   admin: false,
+//   becomeAdmin: function () {
+//     this.admin = true;
+//   },
+// };
+
+// type User = typeof user
+// interface DB {
+//   filterUsers(filter: (this: User) => boolean): User[];
+// }
+// const db = getDB();
+// const admins = db.filterUsers(function (this: User) {
+//   return this.admin;
+// });
 
 
 function safeParse(s: string): unknown {
   return JSON.parse(s);
 }
- 
+
 // Need to be careful with 'obj'!
 const obj12 = safeParse('someRandomString');
+
+interface StringArray {
+  [index: number]: string;
+}
+const string: StringArray = ['123']
+
+
+interface NumberDictionary {
+  [index: string]: number | string;
+  length: number; // ok
+  name: string;
+}
+
+interface BasicAddress {
+  name?: string;
+  street: string;
+  city: string;
+  country: string;
+  postalCode: string;
+}
+
+interface AddressWithUnit extends BasicAddress {
+  unit: string;
+}
+
+interface User1 {
+  name: string
+}
+interface Man {
+  // name: number
+  age: string
+}
+// type User1 = {
+//   name: string
+// }
+// type Man = {
+//   name: number
+// }
+type aaa = User1 & Man
+
+
+interface Box {
+  contents: unknown
+}
+let x1: Box = {
+  contents: '13123123'
+}
+if (typeof x1.contents === 'string') {
+  console.log(x1.contents.toLowerCase())
+}
+
+// 可以将 Box 看作是一个实际类型的模板，其中 Type 是一个占位符，将被其他类型替换。
+interface Box1<Type> {
+  contents: Type;
+}
+
+
+
+
+interface Box2<Type> {
+  contents: Type;
+}
+interface StringBox {
+  contents: string;
+}
+ 
+let boxA: Box2<string> = { contents: "hello" };
+boxA.contents;
+        
+ 
+let boxB: StringBox = { contents: "world" };
+boxB.contents;
+
+
+type OrNull<Type> = Type | null;
+ 
+type OneOrMany<Type> = Type | Type[];
+ 
+type OneOrManyOrNull<Type> = OrNull<OneOrMany<Type>>;
+           
+type OneOrManyOrNullStrings = OneOrManyOrNull<string>;
+interface User2 {
+  name: string,
+  age: number
+}
+const user2: OneOrManyOrNull<User2> = {
+  name: '123',
+  age: 18
+}
+const user3: OneOrManyOrNull<User2> = [{
+  name: '123',
+  age: 18
+}]
+
+
+
+const roArray: ReadonlyArray<string> = ["red", "green", "blue"];
+// roArray.push()
+// ReadonlyArray 的简写方式
+function doStuff(values: readonly string[]) {
+  // We can read from 'values'...
+  const copy = values.slice();
+  console.log(`The first value is ${values[0]}`);
+ 
+  // ...but we can't mutate 'values'.
+  values.push("hello!");
+Property 'push' does not exist on type 'readonly string[]'.
+}
+const arr = ['1']
+doStusff(arr)
+
+
+
+
+
+function doSomething(pair: [string, number]) {
+  const a = pair[0];
+       
+  const b = pair[1];
+       
+  // ...
+}
+// 和上边同理
+interface StringNumberPair {
+  // specialized properties
+  length: 2;
+  0: string;
+  1: number;
+ 
+  // Other 'Array<string | number>' members...
+  slice(start?: number, end?: number): Array<string | number>;
+}
+
+type User = {
+  name: string
+}
+type GetName = (this: User) => string
+const getName: GetName = function () {
+  return this.name
+}
