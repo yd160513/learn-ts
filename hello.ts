@@ -543,9 +543,9 @@ interface StringNumberPair {
   slice(start?: number, end?: number): Array<string | number>;
 }
 
-type User = {
-  name: string
-}
+// type User = {
+//   name: string
+// }
 type GetName = (this: User) => string
 const getName: GetName = function () {
   return this.name
