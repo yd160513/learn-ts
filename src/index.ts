@@ -1,4 +1,5 @@
 import './dataType'
+import './enum'
 
 const hello: string = 'Hello Typescript'
 const div = document.getElementById('app')
