@@ -1,6 +1,7 @@
 import './dataType'
 import './enum'
 import './interface'
+import './function'
 
 const hello: string = 'Hello Typescript'
 const div = document.getElementById('app')
