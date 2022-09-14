@@ -29,7 +29,7 @@ obj.x = 3
 let s1: symbol = Symbol()
 let s2 = Symbol()
 
-// undefined, null: 官网上 undefined 和 null 是任何类型的子类型，所以它是可以被赋值为任何类型的，但是默认是不可以被赋值的，需要将 strictNullChecks 设置为 false
+// undefined, null: 官网上 undefined 和 null 是任何类型的子类型，所以它是可以被赋值为任何类型的，但是默认是不可以被赋值的，需要将 strictNullChecks 设置为 false。(https://www.typescriptlang.org/docs/handbook/2/basic-types.html#strictnullchecks)
 let un: undefined = undefined // 被声明为 undefined 则不可以赋值为其他类型
 let nu: null = null
 // num = undefined // 这里会报错，默认是不可以被赋值的，需要将 strictNullChecks 设置为 false
