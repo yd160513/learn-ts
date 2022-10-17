@@ -11,7 +11,7 @@ let pet: DogInterface & CatInterface = {
 }
 
 // 联合类型: 可以为多个类型中的一个
-let aab: number | 'string' = 'a' // number 或者 string
+let aab: number | 'string' // number 或者 string
 // 字面量类型: 上边是限制变量的类型，这里是限制变量的取值在特定的范围内
 // 字符串字面量联合类型
 let bba: 'a' | 'c' | 's' // bba 的取值只能是这三者其中一个
