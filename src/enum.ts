@@ -137,3 +137,8 @@ function initByRole(role: Role1) {
 
     }
 }
+
+// 获取枚举 Key 的联合类型
+type K = keyof typeof Role
+// 获取枚举所有的属性与方法的类型（包括内置方法的）
+type V = Role[keyof Role]

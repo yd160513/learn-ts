@@ -23,3 +23,12 @@ npm install -D @types/jquery // npm install -D @types/依赖包的名称
 ```
 npm install -D ts-node-dev
 ```
+## 类型检查工具
+```
+npm i -D tsd
+
+import { expectType } from 'tsd'
+
+expectType<string>('xxx') // ✔️
+expectType<string>(123) // ×
+```
